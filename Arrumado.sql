@@ -2,25 +2,26 @@ CREATE TABLE Produto
 ( 
  ID INT PRIMARY KEY AUTO_INCREMENT,  
  Preco FLOAT NOT NULL,  
- Categoria text NOT NULL,  
- Nome VARCHAR(150) NOT NULL,  
+ Categoria VARCHAR NOT NULL,  
+ Nome VARCHAR NOT NULL,  
  Quantidade INT,  
- Descricao text NOT NULL  
+ Descricao VARCHAR NOT NULL,  
 ); 
 
 CREATE TABLE Compra 
 ( 
  ID INT PRIMARY KEY AUTO_INCREMENT,  
  idCliente INT NOT NULL,  
+ idEndereco INT,  
  data DATE NOT NULL,  
- forma_pag VARCHAR(50) NOT NULL,  
- Total INT NOT NULL  
+ forma_pag VARCHAR NOT NULL,  
+ Total INT NOT NULL,  
 ); 
 
 CREATE TABLE Cliente 
 ( 
  ID INT PRIMARY KEY AUTO_INCREMENT,  
- Nome VARCHAR(150) NOT NULL,  
+ Nome VARCHAR NOT NULL,  
  CPF INT NOT NULL,  
  UNIQUE (CPF)
 ); 
@@ -29,33 +30,26 @@ CREATE TABLE Endereco
 ( 
  ID INT PRIMARY KEY AUTO_INCREMENT,  
  idCliente INT NOT NULL,  
- Rua VARCHAR(100) NOT NULL,  
- CEP CHAR(9) NOT NULL,  
+ Rua VARCHAR NOT NULL,  
+ CEP CHAR NOT NULL,  
  Numero INT NOT NULL,  
- Bairro VARCHAR(100) NOT NULL,  
- Cidade VARCHAR(100) NOT NULL,  
- Estado CHAR(2) NOT NULL,  
- Complemento VARCHAR(100) NOT NULL  
+ Bairro VARCHAR NOT NULL,  
+ Cidade VARCHAR NOT NULL,  
+ Estado CHAR NOT NULL,  
+ Complemento VARCHAR NOT NULL,  
 ); 
 
 CREATE TABLE Tem 
 ( 
- IDProduto INT PRIMARY KEY,  
- IDCompra INT ,  
+ ID_Produto INT PRIMARY KEY,  
+ ID_Compra INT PRIMARY KEY,  
  valor_unitario FLOAT NOT NULL,  
  quantidade INT NOT NULL,  
- desconto VARCHAR(50)  
+ desconto VARCHAR,  
 ); 
 
-CREATE TABLE Tem1 
-( 
- ID_Compra INT PRIMARY KEY,  
- ID_Endereco INT  
-); 
-
-ALTER TABLE Compra ADD FOREIGN KEY(idCliente) REFERENCES Cliente (ID);
-ALTER TABLE Endereco ADD FOREIGN KEY(idCliente) REFERENCES Cliente (ID);
-ALTER TABLE Tem ADD FOREIGN KEY(IDProduto) REFERENCES Produto (ID);
-ALTER TABLE Tem ADD FOREIGN KEY(ID_Compra) REFERENCES Compra (ID);
-ALTER TABLE Tem1 ADD FOREIGN KEY(ID_Compra) REFERENCES Endereco (ID);
-ALTER TABLE Tem1 ADD FOREIGN KEY(ID_Endereco) REFERENCES Compra (ID);
+ALTER TABLE Compra ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE Compra ADD FOREIGN KEY(idEndereco) REFERENCES Endereco (idEndereco)
+ALTER TABLE Endereco ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE Tem ADD FOREIGN KEY(ID_Produto) REFERENCES Produto (ID_Produto)
+ALTER TABLE Tem ADD FOREIGN KEY(ID_Compra) REFERENCES Compra (ID_Compra)
